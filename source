@@ -1,0 +1,223 @@
+
+
+local PuffyCarDealerShipTycoon = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIGradient = Instance.new("UIGradient")
+local PuffyCarDealerShipTycon = Instance.new("TextLabel")
+local UICorner_2 = Instance.new("UICorner")
+local AutoFarm = Instance.new("TextButton")
+local Flight = Instance.new("TextButton")
+local Fling = Instance.new("TextButton")
+
+--Properties:
+
+PuffyCarDealerShipTycoon.Name = "Puffy | Car DealerShip Tycoon"
+PuffyCarDealerShipTycoon.Parent = game.CoreGui
+
+Frame.Parent = PuffyCarDealerShipTycoon
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.Position = UDim2.new(0.179183215, 0, 0.276341945, 0)
+Frame.Size = UDim2.new(0, 525, 0, 294)
+main.Active = true
+main.Draggable = true
+
+UICorner.Parent = Frame
+
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 1, 5)), ColorSequenceKeypoint.new(0.27, Color3.fromRGB(128, 3, 4)), ColorSequenceKeypoint.new(0.34, Color3.fromRGB(117, 3, 4)), ColorSequenceKeypoint.new(0.37, Color3.fromRGB(127, 3, 4)), ColorSequenceKeypoint.new(0.46, Color3.fromRGB(108, 4, 4)), ColorSequenceKeypoint.new(0.53, Color3.fromRGB(77, 2, 2)), ColorSequenceKeypoint.new(0.97, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
+UIGradient.Parent = Frame
+
+PuffyCarDealerShipTycon.Name = "Puffy | Car DealerShip Tycon"
+PuffyCarDealerShipTycon.Parent = Frame
+PuffyCarDealerShipTycon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+PuffyCarDealerShipTycon.BackgroundTransparency = 1.000
+PuffyCarDealerShipTycon.Size = UDim2.new(0, 525, 0, 51)
+PuffyCarDealerShipTycon.Font = Enum.Font.Sarpanch
+PuffyCarDealerShipTycon.Text = "Puffy X | Car DealerShip Tycoon"
+PuffyCarDealerShipTycon.TextColor3 = Color3.fromRGB(255, 255, 255)
+PuffyCarDealerShipTycon.TextScaled = true
+PuffyCarDealerShipTycon.TextSize = 14.000
+PuffyCarDealerShipTycon.TextWrapped = true
+
+UICorner_2.Parent = PuffyCarDealerShipTycon
+
+AutoFarm.Name = "Auto Farm"
+AutoFarm.Parent = Frame
+AutoFarm.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+AutoFarm.Position = UDim2.new(0, 0, 0.174895763, 0)
+AutoFarm.Size = UDim2.new(0, 139, 0, 80)
+AutoFarm.Style = Enum.ButtonStyle.RobloxButton
+AutoFarm.Font = Enum.Font.Sarpanch
+AutoFarm.Text = "Auto Farm"
+AutoFarm.TextColor3 = Color3.fromRGB(255, 14, 18)
+AutoFarm.TextScaled = true
+AutoFarm.TextSize = 14.000
+AutoFarm.TextWrapped = true
+AutoFarm.MouseButton1Down:Connect(function()
+	local vu = game:GetService("VirtualUser")
+	game:GetService("Players").LocalPlayer.Idled:connect(function()
+		vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		wait(1)
+		vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+	end)
+
+
+	getgenv().Farm = true
+
+	local RaceLocation = Vector3.new(2198.93701, 638.532166, 1307.18494, -4.76837158e-05, -0.996190667, -0.0872024298, -1, 4.76837158e-05, 2.08243728e-06, 2.08243728e-06, 0.0872024298, -0.996190667)
+
+
+
+	local IsA = game.IsA
+	local function GetFromPlayerCar()
+		for I,V in pairs(game:GetService("Workspace").Cars:GetDescendants()) do 
+			if V.Name == "Owner" then 
+				if V.Value == game.Players.LocalPlayer.Name then 
+					return V.Parent.Parent
+				end
+			end
+		end
+		return "Not Find Car"
+	end
+
+	local function TpCar(Pos)
+		for I,V in pairs(GetFromPlayerCar():GetDescendants()) do 
+			if IsA(V,"BasePart") then 
+				if getgenv().Farm == true then
+					local Tween = game:GetService("TweenService")
+					Tween:create(V,TweenInfo.new(1),{CFrame = CFrame.new(Pos)}):Play()
+				end
+			end
+		end
+	end
+
+
+	local function RaceFarm()
+		for I,V in pairs(game:GetService("Workspace").Races.Race.Checkpoints:GetDescendants()) do 
+			if V.Name == "IsActive" then
+				if game:GetService("Workspace").Races.Race.Script.RaceProgress.Value == true then
+					if game:GetService("Workspace").Races.Race.GoalCheckpoint.IsActive.Value == true then
+						TpCar(V.Parent.Parent.Parent:FindFirstChild("GoalCheckpoint").GoalCheckpoint.Position + Vector3.new(0,-50,0))
+					elseif V.Value == true then
+						TpCar(V.Parent:FindFirstChild("Checkpoint").Position + Vector3.new(0,-50,0)) 
+					end
+				end
+			end
+		end
+	end
+
+
+	local function StartRace()
+		for I,V in pairs(game:GetService("Workspace").Races.Race.Checkpoints:GetDescendants()) do 
+			if V.Name == "IsActive" then 
+				if V.Value == true or game:GetService("Workspace").Races.Race.GoalCheckpoint.IsActive.Value == true then 
+					return true
+				end
+			end
+		end
+		return false
+	end
+
+
+	while getgenv().Farm == true do wait() 
+		for I,V in pairs(GetFromPlayerCar():GetDescendants()) do 
+			if V.Name == "Engine" and IsA(V,"BasePart") then 
+				TpCar(RaceLocation)
+				workspace.Races.RaceHandler.StartLobby:FireServer("Race")
+				local args = {
+					[1] = "5",
+					[2] = "Vote"
+				}
+				workspace.Races.Race.Script.Vote:FireServer(unpack(args))
+				if StartRace() == true  then
+					RaceFarm()
+				end
+			end
+		end
+	end
+end)
+
+Flight.Name = "Flight"
+Flight.Parent = Frame
+Flight.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Flight.Position = UDim2.new(0, 0, 0.449967086, 0)
+Flight.Size = UDim2.new(0, 139, 0, 80)
+Flight.Style = Enum.ButtonStyle.RobloxButton
+Flight.Font = Enum.Font.Sarpanch
+Flight.Text = "Fly (X)"
+Flight.TextColor3 = Color3.fromRGB(255, 14, 18)
+Flight.TextScaled = true
+Flight.TextSize = 14.000
+Flight.TextWrapped = true
+Flight.MouseButton1Down:Connect(function()
+	repeat wait() until game.Players.LocalPlayer.Character
+
+	local plr = game.Players.LocalPlayer
+	local char = plr.Character
+	local hum = char:WaitForChild("Humanoid")
+	local Torso = char:WaitForChild("LowerTorso")
+	local Mouse = plr:GetMouse()
+	local toggle = false
+
+	Mouse.KeyDown:Connect(function(key)
+		if key == "x" then
+			if toggle == false then
+				toggle = true
+				local Anim = Instance.new("Animation")
+				Anim.AnimationId = "rbxassetid://7189034627"
+				local PlayAnim = hum:LoadAnimation(Anim)
+				PlayAnim:Play()
+				local BV = Instance.new("BodyVelocity",Torso)
+				BV.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+				while toggle == true do
+					BV.Velocity = Mouse.Hit.lookVector*100
+					wait()
+				end
+			end
+			if toggle == true then
+				toggle = false
+				Torso:FindFirstChildOfClass("BodyVelocity"):remove()
+				local tracks = hum:GetPlayingAnimationTracks()
+				for i, stoptracks in pairs(tracks) do
+					stoptracks:Stop()
+				end
+				local Anim = Instance.new("Animation")
+				Anim.AnimationId = "http://www.roblox.com/asset/?id=7189034627"
+				local PlayAnim = hum:LoadAnimation(Anim)
+				PlayAnim:Play()
+			end
+		end
+	end)
+end)
+
+NoClip.Name = "NoClip"
+NoClip.Parent = Frame
+NoClip.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NoClip.Position = UDim2.new(0, 0, 0.72503835, 0)
+NoClip.Size = UDim2.new(0, 139, 0, 80)
+NoClip.Style = Enum.ButtonStyle.RobloxButton
+NoClip.Font = Enum.Font.Sarpanch
+NoClip.Text = "NoClip"
+NoClip.TextColor3 = Color3.fromRGB(255, 14, 18)
+NoClip.TextScaled = true
+NoClip.TextSize = 14.000
+NoClip.TextWrapped = true
+NoClip.MouseButton1Down:Connect(function()
+	noclip = false
+	game:GetService('RunService').Stepped:connect(function()
+		if noclip then
+			game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+		end
+	end)
+	plr = game.Players.LocalPlayer
+	mouse = plr:GetMouse()
+	mouse.KeyDown:connect(function(key)
+
+		if key == "e" then
+			noclip = not noclip
+			game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+		end
+	end)
+	print('Loaded')
+	print('Press "b" to noclip')
+end)
